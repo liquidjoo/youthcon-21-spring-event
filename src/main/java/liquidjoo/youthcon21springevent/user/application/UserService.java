@@ -1,8 +1,5 @@
 package liquidjoo.youthcon21springevent.user.application;
 
-import liquidjoo.youthcon21springevent.admin.application.AdminService;
-import liquidjoo.youthcon21springevent.admin.application.CouponService;
-import liquidjoo.youthcon21springevent.sender.application.SenderService;
 import liquidjoo.youthcon21springevent.user.domain.User;
 import liquidjoo.youthcon21springevent.user.domain.UserRepository;
 import org.springframework.context.ApplicationEventPublisher;
@@ -14,12 +11,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final CouponService couponService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, CouponService couponService, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(UserRepository userRepository, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
-        this.couponService = couponService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -30,11 +25,7 @@ public class UserService {
                 userRequest.getPhoneNumber()
         );
         userRepository.save(user);
-
-        user.adminAlarmPublish(applicationEventPublisher);
-        user.senderPublish(applicationEventPublisher);
-
-        couponService.register(user.getEmail());
+        user.eventPublish(applicationEventPublisher);
     }
 
     public UserResponse get(String email) {

@@ -7,7 +7,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class CouponService {
 
-    public void register(String email) {
-        log.info("쿠폰 등록 완료 : {}", email);
-    }
 }

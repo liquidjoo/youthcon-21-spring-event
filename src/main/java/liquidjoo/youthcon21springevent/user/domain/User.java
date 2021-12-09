@@ -46,12 +46,22 @@ public class User {
 
     }
 
-    public void adminAlarmPublish(ApplicationEventPublisher applicationEventPublisher) {
+    public void eventPublish(ApplicationEventPublisher applicationEventPublisher) {
+        adminAlarmPublish(applicationEventPublisher);
+        senderPublish(applicationEventPublisher);
+        couponPublish(applicationEventPublisher);
+    }
+
+    private void adminAlarmPublish(ApplicationEventPublisher applicationEventPublisher) {
         applicationEventPublisher.publishEvent(new UserAdminEvent(this, this.name));
     }
 
-    public void senderPublish(ApplicationEventPublisher applicationEventPublisher) {
+    private void senderPublish(ApplicationEventPublisher applicationEventPublisher) {
         applicationEventPublisher.publishEvent(new UserSenderEvent(this, this.phoneNumber, this.email));
+    }
+
+    private void couponPublish(ApplicationEventPublisher applicationEventPublisher) {
+        applicationEventPublisher.publishEvent(new UserCouponEvent(this, this.email));
     }
 
     public String getName() {
