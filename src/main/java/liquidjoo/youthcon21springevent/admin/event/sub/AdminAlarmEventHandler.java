@@ -2,11 +2,11 @@ package liquidjoo.youthcon21springevent.admin.event.sub;
 
 import liquidjoo.youthcon21springevent.admin.application.AdminService;
 import liquidjoo.youthcon21springevent.admin.event.AdminAlarmEvent;
-import liquidjoo.youthcon21springevent.event.EventSubscriber;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminAlarmEventHandler implements EventSubscriber<AdminAlarmEvent> {
+public class AdminAlarmEventHandler implements ApplicationListener<AdminAlarmEvent> {
     private final AdminService adminService;
 
     public AdminAlarmEventHandler(AdminService adminService) {
@@ -14,7 +14,7 @@ public class AdminAlarmEventHandler implements EventSubscriber<AdminAlarmEvent> 
     }
 
     @Override
-    public void handleEvent(AdminAlarmEvent event) {
+    public void onApplicationEvent(AdminAlarmEvent event) {
         this.adminService.alarm(event.getName());
     }
 }

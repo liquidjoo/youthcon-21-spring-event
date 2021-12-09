@@ -28,9 +28,9 @@ public class UserService {
                 userRequest.getPhoneNumber()
         );
         userRepository.save(user);
-        eventPublisher.publishEvent(new SendEvent(user.getEmail(), user.getPhoneNumber()));
-        eventPublisher.publishEvent(new CouponEvent(user.getEmail()));
-        eventPublisher.publishEvent(new AdminAlarmEvent(user.getName()));
+        eventPublisher.publishEvent(new SendEvent(this, user.getEmail(), user.getPhoneNumber()));
+        eventPublisher.publishEvent(new CouponEvent(this, user.getEmail()));
+        eventPublisher.publishEvent(new AdminAlarmEvent(this, user.getName()));
     }
 
     public UserResponse get(String email) {

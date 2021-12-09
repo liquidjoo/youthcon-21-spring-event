@@ -2,11 +2,11 @@ package liquidjoo.youthcon21springevent.admin.event.sub;
 
 import liquidjoo.youthcon21springevent.admin.application.CouponService;
 import liquidjoo.youthcon21springevent.admin.event.CouponEvent;
-import liquidjoo.youthcon21springevent.event.EventSubscriber;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CouponEventHandler implements EventSubscriber<CouponEvent> {
+public class CouponEventHandler implements ApplicationListener<CouponEvent> {
     private final CouponService couponService;
 
     public CouponEventHandler(CouponService couponService) {
@@ -14,8 +14,7 @@ public class CouponEventHandler implements EventSubscriber<CouponEvent> {
     }
 
     @Override
-    public void handleEvent(CouponEvent event) {
+    public void onApplicationEvent(CouponEvent event) {
         this.couponService.register(event.getEmail());
-        throw new RuntimeException();
     }
 }

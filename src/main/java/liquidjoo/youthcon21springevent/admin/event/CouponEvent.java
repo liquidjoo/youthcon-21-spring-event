@@ -1,9 +1,12 @@
 package liquidjoo.youthcon21springevent.admin.event;
 
-public class CouponEvent {
+import org.springframework.context.ApplicationEvent;
+
+public class CouponEvent extends ApplicationEvent {
     private final String email;
 
-    public CouponEvent(String email) {
+    public CouponEvent(Object source, String email) {
+        super(source);
         this.email = email;
     }
 
