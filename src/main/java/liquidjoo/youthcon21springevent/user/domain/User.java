@@ -2,6 +2,7 @@ package liquidjoo.youthcon21springevent.user.domain;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.context.ApplicationEventPublisher;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,6 +44,10 @@ public class User {
 
     protected User() {
 
+    }
+
+    public void adminAlarmPublish(ApplicationEventPublisher applicationEventPublisher) {
+        applicationEventPublisher.publishEvent(new UserAdminEvent(this, this.name));
     }
 
     public String getName() {

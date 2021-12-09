@@ -5,6 +5,7 @@ import liquidjoo.youthcon21springevent.admin.application.CouponService;
 import liquidjoo.youthcon21springevent.sender.application.SenderService;
 import liquidjoo.youthcon21springevent.user.domain.User;
 import liquidjoo.youthcon21springevent.user.domain.UserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +14,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final AdminService adminService;
     private final SenderService senderService;
     private final CouponService couponService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, AdminService adminService, SenderService senderService, CouponService couponService) {
+    public UserService(UserRepository userRepository, SenderService senderService, CouponService couponService, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
-        this.adminService = adminService;
         this.senderService = senderService;
         this.couponService = couponService;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public void create(UserRequest userRequest) {
@@ -32,7 +33,8 @@ public class UserService {
         );
         userRepository.save(user);
 
-        adminService.alarm(user.getName());
+        user.adminAlarmPublish(applicationEventPublisher);
+
         couponService.register(user.getEmail());
         senderService.sendSMS(user.getPhoneNumber());
         senderService.sendEmail(user.getEmail());
