@@ -14,13 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final SenderService senderService;
     private final CouponService couponService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public UserService(UserRepository userRepository, SenderService senderService, CouponService couponService, ApplicationEventPublisher applicationEventPublisher) {
+    public UserService(UserRepository userRepository, CouponService couponService, ApplicationEventPublisher applicationEventPublisher) {
         this.userRepository = userRepository;
-        this.senderService = senderService;
         this.couponService = couponService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
@@ -34,10 +32,9 @@ public class UserService {
         userRepository.save(user);
 
         user.adminAlarmPublish(applicationEventPublisher);
+        user.senderPublish(applicationEventPublisher);
 
         couponService.register(user.getEmail());
-        senderService.sendSMS(user.getPhoneNumber());
-        senderService.sendEmail(user.getEmail());
     }
 
     public UserResponse get(String email) {

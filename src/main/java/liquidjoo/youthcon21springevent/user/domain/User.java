@@ -50,6 +50,10 @@ public class User {
         applicationEventPublisher.publishEvent(new UserAdminEvent(this, this.name));
     }
 
+    public void senderPublish(ApplicationEventPublisher applicationEventPublisher) {
+        applicationEventPublisher.publishEvent(new UserSenderEvent(this, this.phoneNumber, this.email));
+    }
+
     public String getName() {
         return name;
     }
