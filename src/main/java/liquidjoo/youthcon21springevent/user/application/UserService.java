@@ -1,8 +1,9 @@
 package liquidjoo.youthcon21springevent.user.application;
 
-import liquidjoo.youthcon21springevent.admin.application.AdminService;
-import liquidjoo.youthcon21springevent.admin.application.CouponService;
-import liquidjoo.youthcon21springevent.sender.application.SenderService;
+import liquidjoo.youthcon21springevent.admin.event.AdminAlarmEvent;
+import liquidjoo.youthcon21springevent.admin.event.CouponEvent;
+import liquidjoo.youthcon21springevent.event.EventPublisher;
+import liquidjoo.youthcon21springevent.sender.event.SendEvent;
 import liquidjoo.youthcon21springevent.user.domain.User;
 import liquidjoo.youthcon21springevent.user.domain.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,15 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final AdminService adminService;
-    private final SenderService senderService;
-    private final CouponService couponService;
+    private final EventPublisher eventPublisher;
 
-    public UserService(UserRepository userRepository, AdminService adminService, SenderService senderService, CouponService couponService) {
+    public UserService(UserRepository userRepository, EventPublisher eventPublisher) {
         this.userRepository = userRepository;
-        this.adminService = adminService;
-        this.senderService = senderService;
-        this.couponService = couponService;
+        this.eventPublisher = eventPublisher;
     }
 
     public void create(UserRequest userRequest) {
@@ -31,11 +28,9 @@ public class UserService {
                 userRequest.getPhoneNumber()
         );
         userRepository.save(user);
-
-        adminService.alarm(user.getName());
-        couponService.register(user.getEmail());
-        senderService.sendSMS(user.getPhoneNumber());
-        senderService.sendEmail(user.getEmail());
+        eventPublisher.publishEvent(new SendEvent(user.getEmail(), user.getPhoneNumber()));
+        eventPublisher.publishEvent(new CouponEvent(user.getEmail()));
+        eventPublisher.publishEvent(new AdminAlarmEvent(user.getName()));
     }
 
     public UserResponse get(String email) {
