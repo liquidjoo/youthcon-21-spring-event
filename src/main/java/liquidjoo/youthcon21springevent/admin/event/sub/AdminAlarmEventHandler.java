@@ -1,20 +1,16 @@
 package liquidjoo.youthcon21springevent.admin.event.sub;
 
-import liquidjoo.youthcon21springevent.admin.application.AdminService;
 import liquidjoo.youthcon21springevent.admin.event.AdminAlarmEvent;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class AdminAlarmEventHandler implements ApplicationListener<AdminAlarmEvent> {
-    private final AdminService adminService;
-
-    public AdminAlarmEventHandler(AdminService adminService) {
-        this.adminService = adminService;
-    }
 
     @Override
     public void onApplicationEvent(AdminAlarmEvent event) {
-        this.adminService.alarm(event.getName());
+        log.info("어드민 서비스 : 환영합니다 {}", event.getName());
     }
 }

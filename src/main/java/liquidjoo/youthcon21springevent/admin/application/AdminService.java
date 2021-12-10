@@ -7,8 +7,4 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
 
-    public void alarm(String username) {
-        log.info("어드민 서비스 : 환영합니다 {}", username);
-    }
-
 }

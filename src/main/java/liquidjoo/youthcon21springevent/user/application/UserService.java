@@ -2,10 +2,10 @@ package liquidjoo.youthcon21springevent.user.application;
 
 import liquidjoo.youthcon21springevent.admin.event.AdminAlarmEvent;
 import liquidjoo.youthcon21springevent.admin.event.CouponEvent;
-import liquidjoo.youthcon21springevent.event.EventPublisher;
 import liquidjoo.youthcon21springevent.sender.event.SendEvent;
 import liquidjoo.youthcon21springevent.user.domain.User;
 import liquidjoo.youthcon21springevent.user.domain.UserRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final EventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public UserService(UserRepository userRepository, EventPublisher eventPublisher) {
+    public UserService(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.eventPublisher = eventPublisher;
     }
